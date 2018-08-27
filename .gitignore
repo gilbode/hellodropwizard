@@ -1,3 +1,5 @@
+.wercker/
+
 generated/
 target/
 *.class

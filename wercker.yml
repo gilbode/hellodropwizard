@@ -1,0 +1,57 @@
+box: openjdk:10-jdk-slim
+build:
+  steps:
+    - script:
+        name: echo gradle version
+        code: ./gradlew -version
+    - script:
+        name: create tag
+        code: ./gradlew -Preckon.scope=minor -Preckon.stage=milestone -g $WERCKER_CACHE_DIR/.gradle reckonTagCreate
+    - script:
+        name: build
+        code: ./gradlew -g $WERCKER_CACHE_DIR/.gradle clean assemble
+push-tags:
+  steps:
+    - script:
+        name: install openssh
+        code: apk update && apk upgrade && apk add --no-cache openssh
+    - script:
+        name: git config
+        code: |
+          git config --global user.email "gilbode@gmail.com"
+          git config --global user.name "gilbode"
+          git config --global push.default simple
+    - add-to-known_hosts:
+        hostname: github.com
+        fingerprint: nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8
+        type: rsa
+    - add-ssh-key:
+        keyname: GITHUB_HELLODROPWIZARD
+
+    - script:
+        name: push tag
+        code: ./gradlew -g $WERCKER_CACHE_DIR/.gradle reckonTagPush
+
+accs-deploy:
+  steps:
+    - script:
+        name: install openssh
+        code: apk update && apk upgrade && apk add --no-cache openssh
+
+workflows:
+  - name: build-release
+    pipelines:
+      - name: build
+      - name: push-tags
+        requires:
+          - build
+  - name: build-release-deploy
+    pipelines:
+      - name: build
+      - name: push-tags
+        requires:
+          - build
+      - name: deploy-to-accs
+        requires:
+          - build
+          - push-tags

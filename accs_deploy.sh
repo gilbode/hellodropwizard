@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 PSM_URL="https://psm.us.oraclecloud.com"
 

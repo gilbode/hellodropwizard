@@ -14,7 +14,10 @@ push-tags:
   steps:
     - script:
         name: install openssh
-        code: apk update && apk upgrade && apk add --no-cache openssh
+        code: apt-get update && apt-get install ssh
+    - script:
+        name: install git
+        code: apt-get update && apt-get install git
     - script:
         name: git config
         code: |
@@ -27,7 +30,6 @@ push-tags:
         type: rsa
     - add-ssh-key:
         keyname: GITHUB_HELLODROPWIZARD
-
     - script:
         name: push tag
         code: ./gradlew -g $WERCKER_CACHE_DIR/.gradle reckonTagPush
@@ -35,8 +37,8 @@ push-tags:
 accs-deploy:
   steps:
     - script:
-        name: install openssh
-        code: apk update && apk upgrade && apk add --no-cache openssh
+        name: ACCS deploy
+        code: echo "coming soon..."
 
 workflows:
   - name: build-release

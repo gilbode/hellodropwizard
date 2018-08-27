@@ -14,10 +14,10 @@ push-tags:
   steps:
     - script:
         name: install openssh
-        code: apt-get update && apt-get install ssh
+        code: apt-get update && apt-get install -y ssh
     - script:
         name: install git
-        code: apt-get update && apt-get install git
+        code: apt-get update && apt-get install -y git
     - script:
         name: git config
         code: |
@@ -37,8 +37,13 @@ push-tags:
 accs-deploy:
   steps:
     - script:
+        name: install curl
+        code: apt-get update && apt-get install -y curl
+    - script:
         name: ACCS deploy
-        code: echo "coming soon..."
+        code: |
+            app_version=$(cat build/version-resources/version.txt)
+            ./accs_deploy.sh hellodropwizard "build/libs/hellodropwizard-${app_version}.jar"
 
 workflows:
   - name: build-release

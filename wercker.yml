@@ -32,7 +32,7 @@ push-tags:
         keyname: GITHUB_HELLODROPWIZARD
     - script:
         name: push tag
-        code: ./gradlew -g $WERCKER_CACHE_DIR/.gradle reckonTagPush
+        code: git push --tags origin
 
 accs-deploy:
   steps:

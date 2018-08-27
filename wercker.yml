@@ -41,7 +41,8 @@ accs-deploy:
         code: apt-get update && apt-get install -y curl
     - script:
         name: ACCS deploy
-        code: echo "tbd..."
+        code: |
+         ./accs_deploy.sh hellodropwizard "build/distributions/hellodropwizard.zip"
 
 workflows:
   - name: build-release

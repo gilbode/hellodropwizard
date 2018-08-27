@@ -41,9 +41,7 @@ accs-deploy:
         code: apt-get update && apt-get install -y curl
     - script:
         name: ACCS deploy
-        code: |
-            app_version=$(cat build/version-resources/version.txt)
-            ./accs_deploy.sh hellodropwizard "build/libs/hellodropwizard-${app_version}.jar"
+        code: echo "tbd..."
 
 workflows:
   - name: build-release

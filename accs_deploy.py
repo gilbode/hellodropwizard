@@ -129,7 +129,7 @@ def __deploy_accs_app(storage_url, identity_domain, username, password, app_name
     max_sleep_time = 30
     finished = False
     status = 'InProgress'
-    poll_response = {text:''}
+    poll_response = {'text':''}
     while status not in ['Failed', 'Succeeded']:
         if attempt > max_attempts:
             break

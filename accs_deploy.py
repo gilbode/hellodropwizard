@@ -120,7 +120,25 @@ def __deploy_accs_app(storage_url, identity_domain, username, password, app_name
             headers={'X-ID-TENANT-NAME':identity_domain}, files=formdata,)
     logging.info(response.text)
     response.raise_for_status()
-    # TODO: poll 
+
+    poll_url = response.headers['Location']
+
+    sleep_time_exp = lambda attempt: math.pow(2, attempt) * .1
+    attempt = 1
+    max_attempts = 30
+    max_sleep_time = 30
+    finished = False
+    status = 'InProgress'
+    poll_response = {text:''}
+    while status not in ['Failed', 'Succeeded']:
+        if attempt > max_attempts:
+            break
+        poll_response = requests.get(poll_url, auth=HTTPBasicAuth(username, password))
+        status = poll_response.json()['opStatus']
+    logging.info("After polling url {0}, {1} times, opStatus = {2}".format(
+        poll_url, attempt - 1, status))
+    if status != 'Succeeded':
+        raise Exception('Application deployment failed: {0}'.format(poll_response.text))
 
 def __cmd_deploy(args):
     __upload(args.storage_url, args.identity_domain, args.username, args.password, args.app_name, args.app_version, args.app_archive)

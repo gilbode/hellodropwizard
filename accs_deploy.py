@@ -133,7 +133,8 @@ def __deploy_accs_app(storage_url, identity_domain, username, password, app_name
     while status not in ['Failed', 'Succeeded']:
         if attempt > max_attempts:
             break
-        poll_response = requests.get(poll_url, auth=HTTPBasicAuth(username, password))
+        poll_response = requests.get(poll_url, auth=HTTPBasicAuth(username, password),
+                 headers={'X-ID-TENANT-NAME':identity_domain})
         status = poll_response.json()['opStatus']
     logging.info("After polling url {0}, {1} times, opStatus = {2}".format(
         poll_url, attempt - 1, status))

@@ -1,6 +1,9 @@
 {
 	"runtime": {
-		"majorVersion": "8"
+		"majorVersion": "10"
 	},
-	"command": "java -jar hellodropwizard/hellodropwizard.jar server"
+	"command": "java -jar hellodropwizard/hellodropwizard.jar server",
+	"healthCheck": {
+      "http-endpoint": "/admin/healthcheck"
+    }
 }

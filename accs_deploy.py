@@ -120,7 +120,7 @@ def __deploy_accs_app(storage_url, identity_domain, username, password, app_name
             headers={'X-ID-TENANT-NAME':identity_domain}, files=formdata,)
     logging.info(response.text)
     response.raise_for_status()
-    // TODO: poll 
+    # TODO: poll 
 
 def __cmd_deploy(args):
     __upload(args.storage_url, args.identity_domain, args.username, args.password, args.app_name, args.app_version, args.app_archive)

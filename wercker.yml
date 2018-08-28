@@ -37,6 +37,16 @@ push-tags:
 accs-deploy:
   steps:
     - script:
+        name: install python3
+        code: apt-get update && apt-get install -y python3 python3-requests
+    - script:
+        name: ACCS deploy
+        code: |
+         ./accs_deploy.py hellodropwizard $(cat build/version-resources/version.txt) "build/distributions/hellodropwizard.zip"
+
+accs-deploy-curl:
+  steps:
+    - script:
         name: install curl
         code: apt-get update && apt-get install -y curl
     - script:

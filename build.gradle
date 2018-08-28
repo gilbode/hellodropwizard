@@ -87,6 +87,9 @@ distributions {
     main {
         baseName = 'hellodropwizard'
         contents {
+            into('/') {
+                from('manifest.json')
+            }
             from versionInfo
             from(shadowJar) {
                 rename { name -> 'hellodropwizard.jar' }

@@ -42,7 +42,7 @@ accs-deploy:
     - script:
         name: ACCS deploy
         code: |
-         ./accs_deploy.sh hellodropwizard "build/distributions/hellodropwizard.zip"
+         ./accs_deploy.sh hellodropwizard $(cat build/version-resources/version.txt) "build/distributions/hellodropwizard.zip"
 
 workflows:
   - name: build-release

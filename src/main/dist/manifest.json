@@ -1,6 +1,0 @@
-{
-	"runtime": {
-		"majorVersion": "8"
-	},
-	"command": "java -jar hellodropwizard.jar server"
-}

@@ -5,6 +5,7 @@ import logging
 import os
 import requests
 import sys
+import time
 
 from requests.auth import HTTPBasicAuth
 
@@ -136,6 +137,13 @@ def __deploy_accs_app(storage_url, identity_domain, username, password, app_name
         poll_response = requests.get(poll_url, auth=HTTPBasicAuth(username, password),
                  headers={'X-ID-TENANT-NAME':identity_domain})
         status = poll_response.json()['opStatus']
+        logging.info("After polling url {0}, {1} times, opStatus = {2}".format(
+            poll_url, attempt - 1, status))
+        if status not in ['Failed', 'Succeeded'] and attempt < max_attempts:
+            sleep_time = sleep_time_exp(attempt)
+            time.sleep(sleep_time if sleep_time < max_sleep_time else max_sleep_time)
+        attempt = attempt + 1
+
     logging.info("After polling url {0}, {1} times, opStatus = {2}".format(
         poll_url, attempt - 1, status))
     if status != 'Succeeded':

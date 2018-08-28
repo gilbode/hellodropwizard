@@ -86,8 +86,13 @@ def __upload(storage_url, identity_domain, username, password, app_name, app_ver
     with open(app_archive, 'rb') as file:
         object_url = '{0}/{1}'.format(storage_url, __archive_object_storage_uri(app_name, app_version, app_archive))
         logging.info('Uploading {0} to {1}'.format(app_archive, object_url))
-        response = requests.put(object_url, auth=HTTPBasicAuth(username, password), data=file, timeout=(6.05, 300))
-        response.raise_for_status()
+        http_debuglevel = HTTPConnection.debuglevel
+        try:
+            HTTPConnection.debuglevel = 0
+            response = requests.put(object_url, auth=HTTPBasicAuth(username, password), data=file, timeout=(6.05, 300))
+            response.raise_for_status()
+        finally:
+            HTTPConnection.debuglevel = http_debuglevel
 
 def __cmd_upload(args):
     __upload(args.storage_url, args.identity_domain, args.username, args.password, args.app_name, args.app_version, args.app_archive)

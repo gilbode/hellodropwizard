@@ -42,7 +42,7 @@ accs-deploy:
     - script:
         name: ACCS deploy
         code: |
-         ./accs_deploy.py hellodropwizard $(cat build/version-resources/version.txt) "build/distributions/hellodropwizard.zip"
+         ./accs_deploy.py -d deploy hellodropwizard $(cat build/version-resources/version.txt) "build/distributions/hellodropwizard.zip"
 
 accs-deploy-curl:
   steps:

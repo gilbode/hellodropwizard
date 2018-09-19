@@ -55,7 +55,7 @@ def __object_store_container_exists(storage_url, container_name, username, passw
 def __create_object_store_container(storage_url, container_name, username, password):
     container_url = '{0}/{1}'.format(storage_url, container_name)
     logging.info('Creating container {0} in Object Store'.format(container_name))
-    response = request_put(container_url, auth=HTTPBasicAuth(username, password))
+    response = requests.put(container_url, auth=HTTPBasicAuth(username, password))
     if(response.status_code != 201):
         raise Exception('Failed to create container {0} in Object Store! Response status and message is {1}: {2}'.format(response.status_code, response.text))
     logging.info('Created container {0} in Object Store'.format(container_name))

@@ -72,11 +72,19 @@ accs-deploy-curl:
 oke-deploy:
   steps:
     - kubectl:
+        name: Remove secret for image pull if it already exists
+        server: $KUBE_SERVER
+        token: $KUBE_TOKEN
+        insecure-skip-tls-verify: true 
+        command: delete secret myregistrykey
+    - kubectl:
+        name: Create secret for image pull
         server: $KUBE_SERVER
         token: $KUBE_TOKEN
         insecure-skip-tls-verify: true 
         command: create secret docker-registry myregistrykey --docker-server=$OCIR_SERVER --docker-username=$OCIR_USERNAME --docker-password="$OCIR_PASSWORD" --docker-email=$OCIR_EMAIL
     - kubectl:
+        name: Deploy application
         server: $KUBE_SERVER
         token: $KUBE_TOKEN
         insecure-skip-tls-verify: true 

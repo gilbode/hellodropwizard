@@ -15,7 +15,7 @@ build:
         code: |
           mkdir /hello
           cd /hello
-          unzip "build/distributions/hellodropwizard.zip"
+          unzip "$WERCKER_ROOT/build/distributions/hellodropwizard.zip"
     - internal/docker-push:
         name: Push image to OCIR
         username: $OCIR_USERNAME

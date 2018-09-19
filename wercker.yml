@@ -74,6 +74,7 @@ oke-deploy:
     - kubectl:
         server: $KUBE_SERVER
         token: $KUBE_TOKEN
+        username: $KUBE_USERNAME
         insecure-skip-tls-verify: true 
         command: apply -f hello.yml
         debug: true

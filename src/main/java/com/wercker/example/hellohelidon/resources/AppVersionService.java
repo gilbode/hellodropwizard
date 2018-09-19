@@ -20,7 +20,7 @@ public class AppVersionService implements Service {
     @Override
     public final void update(final Routing.Rules rules) {
         rules
-            .get("/", this::getVersion);
+            .get(this::getVersion);
     }
 
     /**

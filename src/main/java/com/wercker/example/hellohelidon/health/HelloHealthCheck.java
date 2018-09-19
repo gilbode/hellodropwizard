@@ -18,7 +18,7 @@ public class HelloHealthCheck implements Service {
     @Override
     public final void update(final Routing.Rules rules) {
         rules
-            .get("/", this::healthCheck);
+            .get(this::healthCheck);
     }
 
     /**

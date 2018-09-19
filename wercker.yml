@@ -23,7 +23,7 @@ build:
         registry: https://iad.ocir.io/v2/
         repository: odx-pipelines/helidon/hello
         tag: latest
-        cmd: java -jar /hello/hello.jar
+        cmd: java -jar /hello/hellodropwizard.jar
         ports: "80"
 push-tags:
   steps:

@@ -57,6 +57,10 @@ public final class Main {
           port = Integer.parseInt(portEnv);
         }
 
+        // load logging configuration
+        LogManager.getLogManager().readConfiguration(
+                Main.class.getResourceAsStream("/logging.properties"));
+
         // By default this will pick up application.yaml from the classpath
         Config config = Config.create();
 

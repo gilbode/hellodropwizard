@@ -1,6 +1,6 @@
 {
 	"runtime": {
-		"majorVersion": "8"
+		"majorVersion": "10"
 	},
 	"command": "java -jar hellodropwizard.jar",
 	"healthCheck": {

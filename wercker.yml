@@ -10,6 +10,21 @@ build:
     - script:
         name: build
         code: ./gradlew -g $WERCKER_CACHE_DIR/.gradle clean assemble
+    - script: 
+        name: Prepare Docker image
+        code: |
+          mkdir /hello
+          cd /hello
+          unzip "build/distributions/hellodropwizard.zip"
+    - internal/docker-push:
+        name: Push image to OCIR
+        username: $OCIR_USERNAME
+        password: $OCIR_PASSWORD
+        registry: https://iad.ocir.io/v2/
+        repository: odx-pipelines/helidon/hello
+        tag: latest
+        cmd: java -jar /hello/hello.jar
+        ports: "80"
 push-tags:
   steps:
     - script:
@@ -56,21 +71,6 @@ accs-deploy-curl:
 
 oke-deploy:
   steps:
-    - script: 
-        name: Prepare Docker image
-        code: |
-          mkdir /hello
-          cd /hello
-          unzip "build/distributions/hellodropwizard.zip"
-    - internal/docker-push:
-        name: Push image to OCIR
-        username: $OCIR_USERNAME
-        password: $OCIR_PASSWORD
-        registry: https://iad.ocir.io/v2/
-        repository: odx-pipelines/helidon/hello
-        tag: latest
-        cmd: java -jar /hello/hello.jar
-        ports: "80"
     - kubectl:
         server: $KUBE_SERVER
         token: $KUBE_TOKEN

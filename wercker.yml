@@ -76,6 +76,7 @@ oke-deploy:
         token: $KUBE_TOKEN
         insecure-skip-tls-verify: true 
         command: apply -f hello.yml
+        debug: true
 
 workflows:
   - name: build-release

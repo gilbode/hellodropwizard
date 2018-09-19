@@ -1,4 +1,4 @@
-package com.wercker.example.hellohelidon.api;
+package com.wercker.example.hellodropwizard.api;
 
 import org.apache.commons.io.IOUtils;
 

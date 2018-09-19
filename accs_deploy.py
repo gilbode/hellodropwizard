@@ -82,7 +82,7 @@ def __archive_object_storage_uri(app_name, app_version, app_archive):
 
 def __upload(storage_url, identity_domain, username, password, app_name, app_version, app_archive):
     if not __object_store_container_exists(storage_url, app_name, username, password):
-        create_object_store_container(app_name, username, password)
+        __create_object_store_container(app_name, username, password)
     with open(app_archive, 'rb') as file:
         object_url = '{0}/{1}'.format(storage_url, __archive_object_storage_uri(app_name, app_version, app_archive))
         logging.info('Uploading {0} to {1}'.format(app_archive, object_url))

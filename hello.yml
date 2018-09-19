@@ -20,3 +20,5 @@ spec:
         image: iad.ocir.io/odx-pipelines/helidon/hello:latest
         ports:
         - containerPort: 80
+      imagePullSecrets:
+      - name: myregistrykey

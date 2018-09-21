@@ -10,6 +10,21 @@ build:
     - script:
         name: build
         code: ./gradlew -g $WERCKER_CACHE_DIR/.gradle clean assemble
+    - script: 
+        name: Prepare Docker image
+        code: |
+          mkdir /hello
+          cd /hello
+          unzip "$WERCKER_ROOT/build/distributions/hellodropwizard.zip"
+    - internal/docker-push:
+        name: Push image to OCIR
+        username: $OCIR_USERNAME
+        password: $OCIR_PASSWORD
+        registry: https://iad.ocir.io/v2/
+        repository: odx-pipelines/helidon/hello
+        tag: latest
+        cmd: java -jar /hello/hellodropwizard.jar
+        ports: "80"
 push-tags:
   steps:
     - script:
@@ -53,6 +68,27 @@ accs-deploy-curl:
         name: ACCS deploy
         code: |
          ./accs_deploy.sh hellodropwizard $(cat build/version-resources/version.txt) "build/distributions/hellodropwizard.zip"
+
+oke-deploy:
+  steps:
+    - kubectl:
+        name: Remove secret for image pull if it already exists
+        server: $KUBE_SERVER
+        token: $KUBE_TOKEN
+        insecure-skip-tls-verify: true 
+        command: delete secret myregistrykey
+    - kubectl:
+        name: Create secret for image pull
+        server: $KUBE_SERVER
+        token: $KUBE_TOKEN
+        insecure-skip-tls-verify: true 
+        command: create secret docker-registry myregistrykey --docker-server=$OCIR_SERVER --docker-username=$OCIR_USERNAME --docker-password="$OCIR_PASSWORD" --docker-email=$OCIR_EMAIL
+    - kubectl:
+        name: Deploy application
+        server: $KUBE_SERVER
+        token: $KUBE_TOKEN
+        insecure-skip-tls-verify: true 
+        command: apply -f hello.yml
 
 workflows:
   - name: build-release
